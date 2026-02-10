@@ -4,21 +4,15 @@ from random import randint
 import os
 import uvicorn
 
-# ==============================
 # INITIALISATION DE L'APP
-# ==============================
 app = FastAPI()
 
-# ==============================
 # ROUTE RACINE
-# ==============================
 @app.get("/")
 def home():
-    return {"status": "Alerte Deals API v2 is live 🚀"}
+    return {"status": "API en ligne 🚀"}
 
-# ==============================
 # ROUTE /search - Vols flexibles (mock)
-# ==============================
 @app.get("/search")
 def search_flexible_flights(
     origin: str,
@@ -26,7 +20,7 @@ def search_flexible_flights(
     max_price: int
 ):
     """
-    Recherche de vols flexibles (mock intelligent)
+    Recherche de vols flexibles (mock)
     """
     destinations = [
         "Rome",
@@ -41,8 +35,8 @@ def search_flexible_flights(
     results = []
 
     for city in destinations:
+        # Prix aléatoire entre 50 et max_price
         price = randint(50, max_price)
-
         average_price = price + randint(50, 200)
         discount = round((average_price - price) / average_price * 100)
 
@@ -68,12 +62,7 @@ def search_flexible_flights(
         "results": results
     }
 
-# ==============================
 # LANCEMENT SERVEUR (RAILWAY)
-# ==============================
 if __name__ == "__main__":
-    uvicorn.run(
-        app,
-        host="0.0.0.0",
-        port=int(os.environ.get("PORT", 8000))
-    )
+    port = int(os.environ.get("PORT", 8000))
+    uvicorn.run(app, host="0.0.0.0", port=port)
